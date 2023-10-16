@@ -5,7 +5,7 @@ use App\Http\Controllers;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,9 +18,17 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 */
 
 Route::get('/', function(){
-    return view("login");
+    return redirect(url("/home"));
 });
 
 Route::post("/Home", [LoginController::class, 'Validation']);
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
