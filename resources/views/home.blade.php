@@ -1,5 +1,10 @@
 @extends('layouts.main')
 
+
+@section('contentHeader')
+    Dashboard
+@endsection
+
 @section('content-wrapper')
   <section class="except content" style="margin-top: 2.5%;">
       <div class="except container-fluid">

@@ -17,11 +17,9 @@
                 </label>
                 <div class="hiddenDiv except" id="collapseExample">
                     <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                        onclick="event.preventDefault(); $('#logout-form').submit();">
                         {{ __('Logout') }}
                     </a>
-
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
@@ -29,8 +27,7 @@
             </div>
         </div>
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="/" class="nav-link active">
                         <i class="nav-icon fas fa-th"></i>
@@ -48,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="CreateNew" class="nav-link" id="create">
+                    <a href="CreateNew" class="nav-link" id="CreateNew" >
                         <i class="nav-icon fas fa-cogs"></i>
                         <p class="except">
                             Create New
