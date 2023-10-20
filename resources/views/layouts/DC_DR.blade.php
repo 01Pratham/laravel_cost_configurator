@@ -46,6 +46,8 @@
                 <input type="hidden" name="count_of_vm[{{ $Name }}]" id="count_of_vm_{{ $Name }}" value="1">
                 @include("components.virtualMachine", ["Id" => $Id, "Name" => $Name])
             </div>          
+
+            @include("components.StorageServices", ["Id" => $Id, "Name" => $Name, "StorageProds"=> $ProductArr['storage']])
             
         </div>
     </div>

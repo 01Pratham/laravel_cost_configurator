@@ -5,29 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\TblProductList;
 use App\Models\TblQuotType;
 use App\Models\TblRegion;
-
-
 use Illuminate\Http\Request;
 
 class EstimateController extends Controller
 {
-
+    
     protected $productArr;
-    protected $primaryCategoryArr;
+    protected $primaryCategoriesArr;
 
-    private function __construct()
+    public function __construct()
     {
-        $this->productArr = TblProductList::getAllProducts();   
-        $this->primaryCategoryArr = TblProductList::getAllPrimaryCategories();
+        $this->productArr = TblProductList::finalProdArr();
+        $this->primaryCategoriesArr = TblProductList:: getAllPrimaryCategories();
     }
 
-    private function MapProductsWithCategories(){
-        $productWithCategories= array();
-
-        foreach ($this->productArr as $key => $product) {
-            
-        }
-    }
 
     public function validateRes(Request $request)
     {
@@ -41,15 +32,19 @@ class EstimateController extends Controller
         $quotName = TblQuotType::getQuoteName($request->quot_type);
         $region = TblRegion::getAllRegions();
 
-        // print_r($this->primaryCategoryArr);
-        TblProductList::getAllPrimaryCategories();
-        // return view('estimate',[
-        //     "Data" => $resArray, 
-        //     "QuotName" => $quotName[0]['template_name'],
-        //     "regionArr" => $region,
-        //     "Products"=>$this->productArr
-        // ]);
+        return view('estimate', [
+            "Data" => $resArray,
+            "QuotName" => $quotName[0]['template_name'],
+            "regionArr" => $region,
+            "Products" => $this->productArr
+        ]);
+    }
 
 
+
+    public function Test(){
+        echo "<pre>";
+        print_r(TblProductList::getAllProducts());
+        echo "</pre>";
     }
 }

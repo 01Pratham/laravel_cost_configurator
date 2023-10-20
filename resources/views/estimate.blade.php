@@ -4,8 +4,6 @@
 @endsection
 @section('content-wrapper')
 
-@php 
-@endphp
 
     <div class="content Main">
         <div class="container mt-2 Main">
@@ -25,7 +23,8 @@
                         [
                             "Id" => 1, 
                             "Name" => 1,
-                            "regionArr" =>$regionArr
+                            "regionArr" =>$regionArr,
+                            "ProductArr" => $Products
                         ]
                     )
                 </div>
