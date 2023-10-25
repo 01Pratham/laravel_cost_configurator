@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 
 class EstimateController extends Controller
 {
-    
+
     protected $productArr;
     protected $primaryCategoriesArr;
 
     public function __construct()
     {
-        $this->productArr = TblProductList::finalProdArr();
+        $this->productArr = TblProductList::getAllProducts();
         $this->primaryCategoriesArr = TblProductList:: getAllPrimaryCategories();
     }
 

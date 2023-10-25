@@ -44,11 +44,12 @@
             </div>
             <div id="virtual_machine_{{ $Id }}">
                 <input type="hidden" name="count_of_vm[{{ $Name }}]" id="count_of_vm_{{ $Name }}" value="1">
-                @include("components.virtualMachine", ["Id" => $Id, "Name" => $Name])
-            </div>          
+                @include("components.virtualMachine", ["Id" => $Id, "Name" => $Name,"Prods"=> $ProductArr['software'] , "strg"=> $ProductArr['storage']["object_storage"]])
+            </div>
 
-            @include("components.StorageServices", ["Id" => $Id, "Name" => $Name, "StorageProds"=> $ProductArr['storage']])
-            
+            @include("components.StorageServices", ["Id" => $Id, "Name" => $Name, "Prods"=> $ProductArr['storage']])
+            @include("components.NetworkServices", ["Id" => $Id, "Name" => $Name, "Prods"=> $ProductArr['network']])
+
         </div>
     </div>
 </section>

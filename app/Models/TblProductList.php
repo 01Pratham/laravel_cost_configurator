@@ -45,28 +45,4 @@ class TblProductList extends Model
         return $SecCategoryArr;
     }
 
-    public static function finalProdArr()
-    {
-        $finalProdArr = array();
-        $productArr = self::getAllProducts();
-        $primaryCategoryArr = self::getAllPrimaryCategories();
-        $SecCategoryArr = self::getAllSecondaryCategories();
-
-        // foreach ($productArr as $key => $arr) {
-        //     if (in_array($arr['primary_category'], $primaryCategoryArr)) {
-        //         if (in_array($arr['sec_category'], $SecCategoryArr)) {
-        //             $finalProdArr[$arr['primary_category']][$arr['sec_category']][] = [
-        //                 // "id" =>  $arr["id"],
-        //                 // "sku_code" =>  $arr["sku_code"],
-        //                 // "region_id" =>  $arr["region_id"],
-        //                 "sec_category" =>  $arr["sec_category"],
-        //                 "prod_int" =>  $arr["prod_int"],
-        //                 "product_name" =>  $arr["product_name"]
-        //             ];
-        //         }
-        //     }
-        // }
-
-        return $finalProdArr;
-    }
 }

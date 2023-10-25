@@ -29,8 +29,7 @@
                         class="input-group-text form-control col-1 bg-transparent border-right-0 border-left-0 text-sm"
                         id="vcpu_lbl_{{ $Id }}"> : </span>
                     <input type="number" class="form-control small col-6 text-sm-left border-left-0"
-                        id="vcpu_{{ $Id }}" min=0 placeholder="Quantity"
-                        value=""
+                        id="vcpu_{{ $Id }}" min=0 placeholder="Quantity" value=""
                         name="vcpu[{{ $Name }}][]">
                 </div>
                 <div class="col-4 input-group">
@@ -40,8 +39,7 @@
                         class="input-group-text form-control col-1 bg-transparent border-right-0 border-left-0 text-sm"
                         id="ram_{{ $Id }}"> : </span>
                     <input type="number" class="form-control small col-6 text-sm-left border-left-0"
-                        id="ram_{{ $Id }}" min=0 placeholder="Quantity"
-                        value=""
+                        id="ram_{{ $Id }}" min=0 placeholder="Quantity" value=""
                         name="ram[{{ $Name }}][]">
                 </div>
                 <div class="col-4 input-group">
@@ -49,15 +47,16 @@
                         id="inst_disk_{{ $Id }}">
                         <select name="vmDiskIOPS[{{ $Name }}][]" id="disk_{{ $Id }}"
                             class="form-control p-0 text-sm  border-right-0">
-
+                            @foreach ($strg as $i => $str)
+                                <option value="{{ $str['prod_int'] }}">{{ preg_replace("/Object Storage|IOPS per GB| /","",$str['product_name']) }} IOPS / GB</option>
+                            @endforeach
                         </select>
                     </span>
                     <span
                         class="input-group-text form-control col-1 bg-transparent border-right-0 border-left-0 text-sm"
                         id="inst_disk_{{ $Id }}"> : </span>
                     <input type="number" class="form-control small col-6 text-sm-left border-left-0"
-                        id="inst_disk_{{ $Id }}" min=0 placeholder="Quantity"
-                        value=""
+                        id="inst_disk_{{ $Id }}" min=0 placeholder="Quantity" value=""
                         name="inst_disk[{{ $Name }}][]">
                 </div>
             </div>
@@ -87,11 +86,16 @@
             </script>
         </div>
 
+
+
+
         <div class="form-group col-md-3 px-2">
             <h6><small>Operating System :</small></h6>
             <select name="os[{{ $Name }}][]" id="os_{{ $Id }}" class="form-control">
                 <option value="" hidden>Select OS</option>
-
+                @foreach ($Prods['os'] as $i => $arr)
+                    <option value="{{ $arr['prod_int'] }}">{{ $arr['product_name'] }}</option>
+                @endforeach
             </select>
             <input type="hidden" id = "osLic_{{ $Id }}">
         </div>
@@ -100,7 +104,9 @@
             <select name="database[{{ $Name }}][]" id="db_{{ $Id }}" class="form-control">
                 <option value="" hidden>Select DB</option>
                 <option value="NA">NA</option>
-
+                @foreach ($Prods['db'] as $i => $arr)
+                    <option value="{{ $arr['prod_int'] }}">{{ $arr['product_name'] }}</option>
+                @endforeach
                 <option value="Other" contenteditable="true">Other</option>
             </select>
             <input type="hidden" id = "osLic_{{ $Id }}">
@@ -108,18 +114,16 @@
         <div class="form-group col-md-3 px-2">
             <h6><small>Quantity :</small></h6>
             <input type="number" class="form-control small" id="vmqty_{{ $Id }}" min=0
-                placeholder="Quantity"
-                value=""
-                name="vmqty[{{ $Name }}][]">
+                placeholder="Quantity" value="" name="vmqty[{{ $Name }}][]">
         </div>
         <div class="form-group col-md-3 px-2">
             <h6><small>Anti-Virus : </small></h6>
             <select name="virus_type[{{ $Name }}][]" id="virus_type_{{ $Id }}"
                 class="form-control">
                 <option value="">Select Antivirus</option>
-                <?php
-                
-                ?>
+                @foreach ($Prods['av'] as $i => $arr)
+                    <option value="{{ $arr['prod_int'] }}">{{ $arr['product_name'] }}</option>
+                @endforeach
             </select>
         </div>
     </div>

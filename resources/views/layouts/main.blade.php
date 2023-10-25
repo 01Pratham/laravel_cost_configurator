@@ -3,6 +3,7 @@
 
 <head>
     @include('layouts.header')
+    @include('layouts.footer')
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse" style="background: #f4f6f9; overflow-x: hidden;"
