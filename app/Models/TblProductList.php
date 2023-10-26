@@ -15,12 +15,13 @@ class TblProductList extends Model
     public static function getAllProducts()
     {
         $array = array();
-        $productArr = self::select('primary_category', "sec_category", "prod_int", "product_name")->distinct()->get()->toArray();
+        $productArr = self::select('primary_category', "sec_category", "prod_int", "product_name", "default_name")->distinct()->get()->toArray();
         foreach ($productArr as $key => $arr) {
             $array[$arr['primary_category']][$arr["sec_category"]][] = array(
                 "prod_int" => $arr["prod_int"],
                 "product_name" => $arr["product_name"],
             );
+            $array[$arr['primary_category']][$arr["sec_category"]]["default"] = $arr["default_name"];
         }
         return $array;
     }

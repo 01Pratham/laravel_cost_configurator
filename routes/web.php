@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddVmController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Auth;
@@ -45,3 +46,5 @@ Route::post('/estimate/FinalQuotation', function(){return "Yes";})->name("finalQ
 
 
 Route::any("/Test", [EstimateController::class,"Test"]);
+
+Route::post("/AddVM", [AddVmController::class, "index"]);

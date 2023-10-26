@@ -1,9 +1,7 @@
 @extends('layouts.main')
-
 @section('contentHeader')
     Create New
 @endsection
-
 @section('content-wrapper')
     <div class="except container mt-2">
         <div class="Errors except"></div>
@@ -59,13 +57,4 @@
             </form>
         </section>
     </div>
-
-    @php
-        print_r($errors->toArray());
-    @endphp
-
-    <script>
-        $('.nav-link').removeClass("active");
-        $('#CreateNew').addClass("active");
-    </script>
 @endsection

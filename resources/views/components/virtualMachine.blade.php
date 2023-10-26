@@ -11,7 +11,8 @@
         id="rem-vm_{{ $Id }}" data-toggle="button" aria-pressed="flase" autocomplete="on">
 
     <input type="button" value=" Add VM " class="add-estmt btn btn-link float-right except"
-        id="add-vm_{{ $Name }}" data-toggle="button" aria-pressed="flase" autocomplete="on">
+        id="add-vm_{{ $Name }}" data-toggle="button" aria-pressed="flase" autocomplete="on"
+        onclick="add_vm('','{{ csrf_token() }}',{{ $Name }}, {{ $Id }})">
 
 </div>
 <div class="collapse show py-1" id="vm_collapse_{{ $Id }}">
@@ -48,7 +49,14 @@
                         <select name="vmDiskIOPS[{{ $Name }}][]" id="disk_{{ $Id }}"
                             class="form-control p-0 text-sm  border-right-0">
                             @foreach ($strg as $i => $str)
-                                <option value="{{ $str['prod_int'] }}">{{ preg_replace("/Object Storage|IOPS per GB| /","",$str['product_name']) }} IOPS / GB</option>
+                                @php
+                                    if ($i == 'default') {
+                                        continue;
+                                    }
+                                @endphp
+                                <option value="{{ $str['prod_int'] }}">
+                                    {{ preg_replace('/Object Storage|IOPS per GB| /', '', $str['product_name']) }} IOPS
+                                    / GB</option>
                             @endforeach
                         </select>
                     </span>
@@ -94,6 +102,11 @@
             <select name="os[{{ $Name }}][]" id="os_{{ $Id }}" class="form-control">
                 <option value="" hidden>Select OS</option>
                 @foreach ($Prods['os'] as $i => $arr)
+                    @php
+                        if ($i == 'default') {
+                            continue;
+                        }
+                    @endphp
                     <option value="{{ $arr['prod_int'] }}">{{ $arr['product_name'] }}</option>
                 @endforeach
             </select>
@@ -105,6 +118,11 @@
                 <option value="" hidden>Select DB</option>
                 <option value="NA">NA</option>
                 @foreach ($Prods['db'] as $i => $arr)
+                    @php
+                        if ($i == 'default') {
+                            continue;
+                        }
+                    @endphp
                     <option value="{{ $arr['prod_int'] }}">{{ $arr['product_name'] }}</option>
                 @endforeach
                 <option value="Other" contenteditable="true">Other</option>
@@ -122,6 +140,11 @@
                 class="form-control">
                 <option value="">Select Antivirus</option>
                 @foreach ($Prods['av'] as $i => $arr)
+                    @php
+                        if ($i == 'default') {
+                            continue;
+                        }
+                    @endphp
                     <option value="{{ $arr['prod_int'] }}">{{ $arr['product_name'] }}</option>
                 @endforeach
             </select>

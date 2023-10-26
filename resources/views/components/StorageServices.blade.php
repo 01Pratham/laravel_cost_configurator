@@ -19,6 +19,11 @@
             <div class='row'>
                 @foreach ($arr as $key => $product)
                     @php
+                        if ($key == 'default') {
+                            continue;
+                        }
+                    @endphp
+                    @php
                         $IopsUnit = preg_replace("/$new_name|IOPS per GB| /", '', $product['product_name']);
                     @endphp
                     @if (!preg_match("/(^$new_name.$last)/", $product['product_name']))
@@ -31,9 +36,9 @@
                                 <option value='GB'> GB </option>
                                 <option value='TB'>TB</option>
                             </select>
-                            <input type='checkbox' class=' iops-check check ml-auto'
+                            <input type='checkbox' class='iops-check check ml-auto'
                                 id="{{ $product['prod_int'] . '_check_' . $Id }}"
-                                name="{{ $product['prod_int'] . '[' . $Name . ']' }}" >
+                                name="{{ $product['prod_int'] . '[' . $Name . ']' }}">
                             <input type='Number' step="0.1" min=0
                                 name='{{ $product['prod_int'] . '_qty[' . $Name . ']' }}'
                                 id='{{ $product['prod_int'] . '_qty_' . $Id }}' class="strg hide form-control" min=0

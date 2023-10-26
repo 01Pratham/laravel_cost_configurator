@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
+    <title>Configurator | Home</title>
     @include('layouts.header')
-    @include('layouts.footer')
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-collapse" style="background: #f4f6f9; overflow-x: hidden;"
@@ -34,9 +34,6 @@
 
         @yield('content-wrapper')
     </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    @include('layouts.footer')
 </body>
 
 </html>
