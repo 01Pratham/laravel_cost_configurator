@@ -7,18 +7,22 @@
         <h6 class="d-inline-block ml-1 OnInput"></h6>
     </a>
 
+@if ($type == "Ajax") 
     <input type="button" value=" Remove " class="add-estmt btn btn-link float-right except"
         id="rem-vm_{{ $Id }}" data-toggle="button" aria-pressed="flase" autocomplete="on">
-
+@else
     <input type="button" value=" Add VM " class="add-estmt btn btn-link float-right except"
         id="add-vm_{{ $Name }}" data-toggle="button" aria-pressed="flase" autocomplete="on"
         onclick="add_vm('','{{ csrf_token() }}',{{ $Name }}, {{ $Id }})">
+@endif
+
+
 
 </div>
 <div class="collapse show py-1" id="vm_collapse_{{ $Id }}">
     <h6><small>VM Name :</small></h6>
     <input type="text" class="form-control" id="vmname_{{ $Id }}" placeholder="Virtual Machine"
-        name="vmname[{{ $Name }}][]" value="">
+        name="{{ $Name }}[vm{{ $Id }}][vmname]" value="">
     <div class="form-row mt-2">
         <div class="form-group col-md-9 px-2">
             <h6><small>Instance :</small></h6>
@@ -31,7 +35,7 @@
                         id="vcpu_lbl_{{ $Id }}"> : </span>
                     <input type="number" class="form-control small col-6 text-sm-left border-left-0"
                         id="vcpu_{{ $Id }}" min=0 placeholder="Quantity" value=""
-                        name="vcpu[{{ $Name }}][]">
+                        name="{{ $Name }}[vm{{ $Id }}][vcpu]">
                 </div>
                 <div class="col-4 input-group">
                     <span class="input-group-text form-control col-5 bg-transparent border-right-0 text-sm"
@@ -41,12 +45,12 @@
                         id="ram_{{ $Id }}"> : </span>
                     <input type="number" class="form-control small col-6 text-sm-left border-left-0"
                         id="ram_{{ $Id }}" min=0 placeholder="Quantity" value=""
-                        name="ram[{{ $Name }}][]">
+                        name="{{ $Name }}[vm{{ $Id }}][ram]">
                 </div>
                 <div class="col-4 input-group">
                     <span class="input-group-text form-control col-5 p-0 bg-transparent border-0 "
                         id="inst_disk_{{ $Id }}">
-                        <select name="vmDiskIOPS[{{ $Name }}][]" id="disk_{{ $Id }}"
+                        <select name="{{ $Name }}[vm{{ $Id }}][vmDiskIOPS]" id="disk_{{ $Id }}"
                             class="form-control p-0 text-sm  border-right-0">
                             @foreach ($strg as $i => $str)
                                 @php
@@ -65,13 +69,13 @@
                         id="inst_disk_{{ $Id }}"> : </span>
                     <input type="number" class="form-control small col-6 text-sm-left border-left-0"
                         id="inst_disk_{{ $Id }}" min=0 placeholder="Quantity" value=""
-                        name="inst_disk[{{ $Name }}][]">
+                        name="{{ $Name }}[vm{{ $Id }}][inst_disk]">
                 </div>
             </div>
         </div>
         <div class="form-group col-md-3 px-2">
             <h6><small>VM State :</small></h6>
-            <select name="state[{{ $Name }}][]" id="state_{{ $Id }}" class="form-control">
+            <select name="{{ $Name }}[vm{{ $Id }}][state]" id="state_{{ $Id }}" class="form-control">
                 <option value="Standalone">Standalone</option>
                 <option value="Active" class="single">Active</option>
                 <option value="Passive" class="single">Passive</option>
@@ -99,7 +103,7 @@
 
         <div class="form-group col-md-3 px-2">
             <h6><small>Operating System :</small></h6>
-            <select name="os[{{ $Name }}][]" id="os_{{ $Id }}" class="form-control">
+            <select name="{{ $Name }}[vm{{ $Id }}][os]" id="os_{{ $Id }}" class="form-control">
                 <option value="" hidden>Select OS</option>
                 @foreach ($Prods['os'] as $i => $arr)
                     @php
@@ -114,7 +118,7 @@
         </div>
         <div class="form-group col-md-3 px-2">
             <h6><small>Database :</small></h6>
-            <select name="database[{{ $Name }}][]" id="db_{{ $Id }}" class="form-control">
+            <select name="{{ $Name }}[vm{{ $Id }}][database]" id="db_{{ $Id }}" class="form-control">
                 <option value="" hidden>Select DB</option>
                 <option value="NA">NA</option>
                 @foreach ($Prods['db'] as $i => $arr)
@@ -132,11 +136,11 @@
         <div class="form-group col-md-3 px-2">
             <h6><small>Quantity :</small></h6>
             <input type="number" class="form-control small" id="vmqty_{{ $Id }}" min=0
-                placeholder="Quantity" value="" name="vmqty[{{ $Name }}][]">
+                placeholder="Quantity" value="" name="{{ $Name }}[vm{{ $Id }}][vmqty]">
         </div>
         <div class="form-group col-md-3 px-2">
             <h6><small>Anti-Virus : </small></h6>
-            <select name="virus_type[{{ $Name }}][]" id="virus_type_{{ $Id }}"
+            <select name="{{ $Name }}[vm{{ $Id }}][virus_type]" id="virus_type_{{ $Id }}"
                 class="form-control">
                 <option value="">Select Antivirus</option>
                 @foreach ($Prods['av'] as $i => $arr)

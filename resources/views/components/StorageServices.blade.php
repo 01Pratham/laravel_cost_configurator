@@ -31,16 +31,16 @@
                             <label style='cursor:pointer' class='h6'>
                                 <span class="lblIops" id="{{ $IopsUnit }}">{{ $IopsUnit }}</span> IOPS /
                             </label>
-                            <select name='{{ $product['prod_int'] . '_unit[' . $Name . ']' }}'
+                            <select name='{{ $Name . '[storage][' . $type . '][' . $product['prod_int'] . '_unit]' }}'
                                 id='{{ $product['prod_int'] . '_unit_' . $Id }}' class='strg-select'>
                                 <option value='GB'> GB </option>
                                 <option value='TB'>TB</option>
                             </select>
                             <input type='checkbox' class='iops-check check ml-auto'
                                 id="{{ $product['prod_int'] . '_check_' . $Id }}"
-                                name="{{ $product['prod_int'] . '[' . $Name . ']' }}">
+                                name="{{ $Name . '[storage][' . $type . '][' . $product['prod_int'] . '_check]' }}">
                             <input type='Number' step="0.1" min=0
-                                name='{{ $product['prod_int'] . '_qty[' . $Name . ']' }}'
+                                name='{{ $Name . '[storage][' . $type . '][' . $product['prod_int'] . '_qty]' }}'
                                 id='{{ $product['prod_int'] . '_qty_' . $Id }}' class="strg hide form-control" min=0
                                 placeholder="Quantity" value="">
                         </div>
@@ -53,3 +53,9 @@
         @endif
     @endforeach
 </div>
+
+
+
+{{-- {{/* $product['prod_int'] . '_unit[' . $Name . ']' */}}  --}}
+{{-- {{ $product['prod_int'] . '[' . $Name . ']' }} --}}
+{{-- {{ $product['prod_int'] . '_qty[' . $Name . ']' }} --}}

@@ -8,24 +8,41 @@
     <div class="row">
         @foreach ($Prods as $secCategory => $arr)
             <div class="form-group col-md-4 row my-3">
-                <select name="{{ $secCategory }}_select[{{ $Name }}]"
-                    id="{{ $secCategory }}_select_{{ $Id }}" class="border-0 " style="width: 70%;">
+                <select name="{{ $Name . '[security][' . $secCategory . '_select]' }}"
+                    id="{{ $secCategory }}_select_{{ $Id }}" class="border-0 sec-select" style="width: 70%;">
                     <option value="">{{ $arr['default'] }}</option>
                     @foreach ($arr as $key => $prod)
                         @php
                             if ($key == 'default' || $prod['product_name'] == $arr['default']) {
+                                echo "<option value ='removeNameFromSelect' class = 'removeNameFromSelect' hidden></option>";
                                 continue;
                             }
                         @endphp
                         <option value="{{ $prod['prod_int'] }}">{{ $prod['product_name'] }}</option>
                     @endforeach
                 </select>
-                <input type="checkbox" name="{{ $secCategory }}_check[{{ $Name }}]"
+                <input type="checkbox" name="{{ $Name . '[security][' . $secCategory . '_check]' }}"
                     id="{{ $secCategory }}_check_{{ $Id }}" class="check sec-check ">
                 <input type="number" min=0 placeholder="Quantity" value=""
-                    name="{{ $secCategory }}_qty[{{ $Name }}]"
+                    name="{{ $Name . '[security][' . $secCategory . '_qty]' }}"
                     id="{{ $secCategory }}_qty_{{ $Id }}" class="hide form-control sec-qty">
             </div>
         @endforeach
     </div>
 </div>
+
+
+{{-- {{ $Name . '[security][' . $secCategory . '_qty]' }} --}}
+
+
+
+{{-- {{ $secCategory }}_select[{{ $Name }}] --}}
+{{-- {{ $secCategory }}_check[{{ $Name }}] --}}
+{{-- {{ $secCategory }}_qty[{{ $Name }}] --}}
+
+
+<script> 
+    $('.removeNameFromSelect').each(function(){
+        $(this).parent().removeAttr("name");
+    })
+</script>

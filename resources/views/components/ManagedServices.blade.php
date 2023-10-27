@@ -11,7 +11,7 @@
                 <select id="{{ $key }}_select_{{ $Id }}" class="border-0 " style="width: 70%;">
                     <option value="">{{ $arr['default'] }}</option>
                 </select>
-                <input type="checkbox" name="{{ $key }}_check[{{ $Name }}]" id="{{ $key }}_check_{{ $Id }}" class="check">
+                <input type="checkbox" name="{{ $Name . "[managed][$key]" }}" id="{{ $key }}_check_{{ $Id }}" class="check">
             </div>
         @endforeach
     </div>
@@ -19,3 +19,4 @@
 
 
 
+{{-- {{ $key }}_check[{{ $Name }}] --}}

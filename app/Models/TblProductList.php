@@ -36,6 +36,7 @@ class TblProductList extends Model
 
         return $primaryCategoryArr;
     }
+
     public static function getAllSecondaryCategories()
     {
         $SecCategoryArr = self::select('sec_category')->distinct()->get()->toArray();
@@ -46,4 +47,11 @@ class TblProductList extends Model
         return $SecCategoryArr;
     }
 
+    public static function getProductName($prodInt, $key = "product_name")
+    {
+        $arr = self::where("prod_int", $prodInt)->get()->toArray();
+        if (!empty($arr)) {
+            return $arr[0][$key];
+        }
+    }
 }

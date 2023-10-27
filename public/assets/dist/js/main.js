@@ -186,7 +186,7 @@ function add_vm(count = '',_token, name, id, cloneId = '', lastVM = false) {
 }
 
 
-function add_estmt(cloneId = '', lastEst = false) {
+function add_estmt(_token,cloneId = '', lastEst = false) {
     let count_of = 1;
     var count_of_est = parseInt($('#count_of_est').val()) + 1;
     $('#count_of_est').val(count_of_est);
@@ -194,8 +194,9 @@ function add_estmt(cloneId = '', lastEst = false) {
     var count_id = count_of_est + "" + count_of;
     $.ajax({
         type: "POST",
-        url: 'edit-ajax_estm.php',
+        url: '/AddEstimate',
         data: {
+            "_token" : _token,
             name: count_of_est,
             id: count_id,
             cloneId: cloneId,
