@@ -47,7 +47,7 @@ class TblProductList extends Model
         return $SecCategoryArr;
     }
 
-    public static function getProductName($prodInt, $key = "product_name")
+    public static function getProductInfo($prodInt, $key = "product_name")
     {
         $arr = self::where("prod_int", $prodInt)->get()->toArray();
         if (!empty($arr)) {

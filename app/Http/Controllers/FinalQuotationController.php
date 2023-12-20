@@ -61,9 +61,9 @@ class FinalQuotationController extends Controller
                                         }
                                         foreach ($storageInts as $ProdInt => $ProdName) {
                                             if (isset($arr[$ProdInt . "_check"])) {
-                                                $ManipulatedArr[$key]["Storage and Backup Services"][] = array(
+                                                $ManipulatedArr[$key]["Storage and Backup"][] = array(
                                                     "group_name" => ucwords(preg_replace("/_/", " ", $cat)),
-                                                    "product" => TblProductList::getProductName($ProdInt),
+                                                    "product" => TblProductList::getProductInfo($ProdInt),
                                                     "unit" => $arr[$ProdInt . "_qty"] . " " . $arr[$ProdInt . "_unit"],
                                                     "cost" => '',
                                                     "mrc" => '',
@@ -172,7 +172,7 @@ class FinalQuotationController extends Controller
                 foreach ($arr as $int => $lic) {
                     $ManipulatedArr[$key]["Software Licences"][] = array(
                         "group_name" => "Operating System",
-                        "product"    => TblProductList::getProductName($int),
+                        "product"    => TblProductList::getProductInfo($int),
                         "unit"       => array_sum($osLic[$key][$int]),
                         "cost"       => '',
                         "mrc"        => '',
@@ -185,9 +185,9 @@ class FinalQuotationController extends Controller
                 foreach ($arr as $int => $lic) {
                     $ManipulatedArr[$key]["Software Licences"][] = array(
                         "group_name" => "Database",
-                        "product"    => TblProductList::getProductName($int),
-                        "unit"       => array_sum($dbLic[$key][$int]),
-                        "cost"       => '',
+                        "product"    => TblProductList::getProductInfo($int),
+                        "unit"       => array_sum($dbLic[$key]),
+                        "cost"       => TblProductList::getProductInfo($int, ""),
                         "mrc"        => '',
                     );
                 }
@@ -201,10 +201,10 @@ class FinalQuotationController extends Controller
     {
         $name = "vCores : " . $array['cpu'] .
             " | RAM "   . $array['ram'] .
-            " GB | Disk - " . preg_replace("/Object Storage|IOPS per GB| /", '', TblProductList::getProductName($array['diskIops'])) .
+            " GB | Disk - " . preg_replace("/Object Storage|IOPS per GB| /", '', TblProductList::getProductInfo($array['diskIops'])) .
             " IOPS - " . $array['disk'] .
-            " GB | OS : " . TblProductList::getProductName($array['os']) .
-            " | DB : " . TblProductList::getProductName($array['db']);
+            " GB | OS : " . TblProductList::getProductInfo($array['os']) .
+            " | DB : " . TblProductList::getProductInfo($array['db']);
 
         return $name;
     }
@@ -223,4 +223,6 @@ class FinalQuotationController extends Controller
         }
         return $Arr['qty'];
     }
+
+
 }
