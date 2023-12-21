@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\TblProductList;
+use App\Models\TblRateCardPrices;
+use Exception;
 use Illuminate\Http\Request;
 
 class FinalQuotationController extends Controller
@@ -11,6 +13,7 @@ class FinalQuotationController extends Controller
     {
         echo "<pre>";
         print_r(self::ManipulateRes($request->all()));
+        // print_r($request->all());
         echo "</pre>";
     }
 
@@ -24,19 +27,32 @@ class FinalQuotationController extends Controller
                 if (is_array($val)) {
                     foreach ($val as $K => $V) {
                         if (preg_match("/^vm/", $K)) {
+                            $VMName = self::getVm([
+                                'cpu' => $V['vcpu'],
+                                'ram' => $V['ram'],
+                                'diskIops' => $V['vmDiskIOPS'],
+                                'disk' => $V['inst_disk'],
+                                'os' => $V['os'],
+                                'db' => $V['database']
+                            ], "Name");
+
+
+                            $VMCost = self::getVm([
+                                'cpu' => $V['vcpu'],
+                                'ram' => $V['ram'],
+                                'diskIops' => $V['vmDiskIOPS'],
+                                'disk' => $V['inst_disk'],
+                                'region' => $val['region'],
+                                'prod_list' => $data['product_list']
+                            ], "Price");
+
+
                             $ManipulatedArr[$key]["eNlight Cloud Hosting"][] = array(
                                 "group_name" => $V["vmname"],
-                                "product" => self::getVMName([
-                                    'cpu' => $V['vcpu'],
-                                    'ram' => $V['ram'],
-                                    'diskIops' => $V['vmDiskIOPS'],
-                                    'disk' => $V['inst_disk'],
-                                    'os' => $V['os'],
-                                    'db' => $V['database']
-                                ]),
+                                "product" => $VMName,
                                 "unit" => $V["vmqty"] . " NO",
-                                "cost" => '',
-                                "mrc" => $V["vmname"],
+                                "cost" => $VMCost,
+                                "mrc" => $V["vmqty"] * $VMCost,
                             );
                             $osLic[$key][$V['os']][] = self::CalculateOsLic([
                                 "int"  => $V['os'],
@@ -60,12 +76,14 @@ class FinalQuotationController extends Controller
                                             $storageInts[$C['prod_int']] = $C['product_name'];
                                         }
                                         foreach ($storageInts as $ProdInt => $ProdName) {
+
                                             if (isset($arr[$ProdInt . "_check"])) {
+                                                $cost = TblRateCardPrices::getProductPrices($ProdInt, $val['region'], $data['product_list']);
                                                 $ManipulatedArr[$key]["Storage and Backup"][] = array(
                                                     "group_name" => ucwords(preg_replace("/_/", " ", $cat)),
                                                     "product" => TblProductList::getProductInfo($ProdInt),
                                                     "unit" => $arr[$ProdInt . "_qty"] . " " . $arr[$ProdInt . "_unit"],
-                                                    "cost" => '',
+                                                    "cost" => $cost,
                                                     "mrc" => '',
                                                 );
                                             }
@@ -125,21 +143,21 @@ class FinalQuotationController extends Controller
                             $securityInts = array();
                             $securityArray = TblProductList::where("primary_category", "security")->get()->toArray();
                             foreach ($securityArray as $P => $C) {
-                                $securityInts[$C['sec_category']] = $C['default_name'];
+                                $securityInts[$C['sec_category']] = $C['product_name'];
                             }
 
                             foreach ($securityInts as $Category => $DefaultName) {
+                                $cost = TblRateCardPrices::getProductPrices(!empty($V[$Category . "_select"]) ? $V[$Category . "_select"] : $Category, $val['region'], $data['product_list']);
                                 if (isset($V[$Category . "_check"])) {
                                     $ManipulatedArr[$key]["Security"][] = array(
                                         "group_name"    => "Services",
                                         "product"       => $DefaultName,
-                                        "unit"          => $V[$Category . "_qty"] . " NO",
-                                        "cost"          => '',
-                                        "mrc"           => '',
+                                        "unit"          => self::getSecQty($Category, $V) . " NO",
+                                        "cost"          => $cost,
+                                        // "mrc"           => self::getSecQty($Category, $V) * $cost,
                                     );
                                 }
                             }
-
                             // $ManipulatedArr[$key]["Security"][]= $securityInts;
                         }
 
@@ -152,11 +170,13 @@ class FinalQuotationController extends Controller
 
                             foreach ($managedInts as $Category => $DefaultName) {
                                 if (isset($V[$Category])) {
+                                    $cost = 0;
+                                    // $cost = TblRateCardPrices::getProductPrices( $Category, $val['region'], $data['product_list']);
                                     $ManipulatedArr[$key]["Managed"][] = array(
                                         "group_name"    => "Services",
                                         "product"       => $DefaultName,
                                         "unit"          => " Job",
-                                        "cost"          => '',
+                                        "cost"          => $cost,
                                         "mrc"           => '',
                                     );
                                 }
@@ -187,7 +207,7 @@ class FinalQuotationController extends Controller
                         "group_name" => "Database",
                         "product"    => TblProductList::getProductInfo($int),
                         "unit"       => array_sum($dbLic[$key]),
-                        "cost"       => TblProductList::getProductInfo($int, ""),
+                        "cost"       => TblProductList::getProductInfo($int),
                         "mrc"        => '',
                     );
                 }
@@ -197,16 +217,26 @@ class FinalQuotationController extends Controller
         return $ManipulatedArr;
     }
 
-    private static function getVMName($array)
+    private static function getVm($array, $action)
     {
-        $name = "vCores : " . $array['cpu'] .
-            " | RAM "   . $array['ram'] .
-            " GB | Disk - " . preg_replace("/Object Storage|IOPS per GB| /", '', TblProductList::getProductInfo($array['diskIops'])) .
-            " IOPS - " . $array['disk'] .
-            " GB | OS : " . TblProductList::getProductInfo($array['os']) .
-            " | DB : " . TblProductList::getProductInfo($array['db']);
+        global $val, $data;
+        if ($action == "Name") {
+            $name = "vCores : " . $array['cpu'] .
+                " | RAM "   . $array['ram'] .
+                " GB | Disk - " . preg_replace("/Object Storage|IOPS per GB| /", '', TblProductList::getProductInfo($array['diskIops'])) .
+                " IOPS - " . $array['disk'] .
+                " GB | OS : " . TblProductList::getProductInfo($array['os']) .
+                " | DB : " . TblProductList::getProductInfo($array['db']);
 
-        return $name;
+            return $name;
+        } else {
+            $cost = [
+                "cpu" => $array['cpu'] * TblRateCardPrices::getProductPrices("vcpu_static", $array['region'], $array['prod_list']),
+                "ram" => $array['ram'] * TblRateCardPrices::getProductPrices("vram_static", $array['region'], $array['prod_list']),
+                "disk" => $array['disk'] * TblRateCardPrices::getProductPrices($array['diskIops'], $array['region'], $array['prod_list']),
+            ];
+            return array_sum($cost);
+        }
     }
 
     private static function CalculateOsLic($Arr)
@@ -217,12 +247,20 @@ class FinalQuotationController extends Controller
             return $Arr['qty'];
         }
     }
-    private static function CalculateDbLic($Arr){
-        if($Arr == "NA"){
+    private static function CalculateDbLic($Arr)
+    {
+        if ($Arr == "NA") {
             return 0;
         }
         return $Arr['qty'];
     }
 
-
+    private static function getSecQty($name, $arr)
+    {
+        try {
+            return $arr[$name . "_qty"];
+        } catch (Exception  $e) {
+            return 1;
+        }
+    }
 }

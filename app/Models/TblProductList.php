@@ -40,7 +40,6 @@ class TblProductList extends Model
     public static function getAllSecondaryCategories()
     {
         $SecCategoryArr = self::select('sec_category')->distinct()->get()->toArray();
-
         foreach ($SecCategoryArr as $key => $arr) {
             $SecCategoryArr[$key] = $arr['sec_category'];
         }

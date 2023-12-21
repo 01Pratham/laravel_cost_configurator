@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TblProductList;
 use App\Models\TblQuotType;
+use App\Models\TblUiOptions;
 use App\Models\TblRegion;
 use Illuminate\Http\Request;
 

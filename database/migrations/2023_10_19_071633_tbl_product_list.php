@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("primary_category");
             $table->string("sec_category");
             $table->string("prod_int");
+            $table->string("default_name");
             $table->string("product_name");
         });
     }
