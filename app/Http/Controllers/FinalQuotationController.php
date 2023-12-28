@@ -59,11 +59,16 @@ class FinalQuotationController extends Controller
                                 "core" => $V['vcpu'],
                                 "qty"  => $V['vmqty'],
                             ]);
+                            $osLic[$key][$V['os']]["region"]=   $val['region'];
+                            $osLic[$key][$V['os']]["List"]=   $data['product_list'];
+                            
                             $dbLic[$key][$V['database']][] = self::CalculateDbLic([
                                 "int"  => $V['database'],
                                 "core" => $V['vcpu'],
                                 "qty"  => $V['vmqty'],
                             ]);
+                            $dbLic[$key][$V['database']]["region"]=   $val['region'];
+                            $dbLic[$key][$V['database']]["List"]=   $data['product_list'];
                         }
 
                         if (preg_match("/^storage/", $K)) {
@@ -190,11 +195,14 @@ class FinalQuotationController extends Controller
         if (!empty($osLic)) {
             foreach ($osLic as $key => $arr) {
                 foreach ($arr as $int => $lic) {
+echo $lic['region'];
+                    // $cost = TblRateCardPrices::getProductPrices($int, $lic['region'], $lic['List']);
                     $ManipulatedArr[$key]["Software Licences"][] = array(
                         "group_name" => "Operating System",
                         "product"    => TblProductList::getProductInfo($int),
                         "unit"       => array_sum($osLic[$key][$int]),
                         "cost"       => '',
+                        // "cost"       => $cost,
                         "mrc"        => '',
                     );
                 }
@@ -212,7 +220,6 @@ class FinalQuotationController extends Controller
                     );
                 }
             }
-            // print_r($dbLic);
         }
         return $ManipulatedArr;
     }
