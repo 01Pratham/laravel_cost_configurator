@@ -15,7 +15,9 @@
         <span class="float-right">
             <select name="{{ $Name }}[region]" id="region_{{ $Id }}" class="border-0 text-primary">
                 @foreach ($regionArr as $key => $val)
+                    @if ($val['id'] != 0)
                     <option value = "{{ $val['id'] }}"> {{ $val['region_name'] }}</option>
+                    @endif
                 @endforeach
             </select>
             <select name="{{ $Name }}[EstType]" id="EstType_{{ $Id }}"

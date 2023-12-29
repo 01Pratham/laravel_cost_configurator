@@ -9,8 +9,16 @@
         <div class="form-group col-md-3">
             <select name="{{ $Name . '[network][bandwidth_select]' }}" id="bandwidthType_{{ $Id }}"
                 class="border-0 small" style="width: 100%;">
-                <option value="Speed Based Internet Bandwidth">Speed Based Internet Bandwidth</option>
-                <option value="Volume Based Internet Bandwidth">Volume Based Internet Bandwidth</option>
+                {{-- <option value="Speed Based Internet Bandwidth">Speed Based Internet Bandwidth</option>
+                <option value="Volume Based Internet Bandwidth">Volume Based Internet Bandwidth</option> --}}
+                @foreach ($Prods['bandwidth'] as $key => $val)
+                    @php
+                        if ($key == 'default') {
+                            continue;
+                        }
+                    @endphp
+                    <option value="{{ $val["prod_int"] }}">{{ $val["product_name"] }}</option>
+                @endforeach
             </select>
             <!-- <input type="number" min=0 name="{{ $Name . '[network][_check]' }}" id="bandwidth_{{ $Id }}" class="form-control my-1" placeholder="Mbps" value=""> -->
             <div class="input-group">
@@ -56,8 +64,9 @@
                     <label class="form-check-label h6" for="ipsec_vpn">IPSEC VPN : </label>
                     <input class="form-check-input check ml-1" role="switch" type="checkbox"
                         id="ipsec_vpn_{{ $Id }}" name="{{ $Name . '[network][ipsec_vpn_check]' }}">
-                    <input type="number" min=0 name="{{ $Name . '[network][ipsec_vpn_qty]' }}" class="hide form-control"
-                        placeholder="Quantity" value="" id="ipsecvpnqty_{{ $Id }}">
+                    <input type="number" min=0 name="{{ $Name . '[network][ipsec_vpn_qty]' }}"
+                        class="hide form-control" placeholder="Quantity" value=""
+                        id="ipsecvpnqty_{{ $Id }}">
                 </div>
             </div>
         </div>

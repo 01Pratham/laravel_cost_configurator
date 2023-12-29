@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\TblProductList;
+use Exception;
 
 class TblRateCardPrices extends Model
 {
     use HasFactory;
     protected $table = "tbl_rate_card_prices";
 
-    public static function getProductPrices($int, $reg,$rateCard){
+    public static function getProductPrices($int, $reg, $rateCard){
+        $id = 0;
         $arr = TblProductList::where("prod_int",$int)
                 ->where("region_id",$reg)
                 ->get()
@@ -27,8 +29,11 @@ class TblRateCardPrices extends Model
         }else{
             $id = $arr[0]['id'];
         }
-        // $id = $arr[0]['id'];
         $Price = self::where("prod_id",$id)->where("rate_card_id",$rateCard)->get()->toArray();
-        return $Price[0]['selling_price'];
+        try {
+            return $Price[0]["selling_price"];
+        }catch(Exception $e){
+            return 0;
+        }
     }
 }
